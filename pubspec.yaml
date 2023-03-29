@@ -14,9 +14,31 @@ dependencies:
   flame: ^1.6.0
 
 dev_dependencies: 
+  flutter_launcher_icons: ^0.12.0
   flutter_lints: ^2.0.0
   flutter_test: 
     sdk: flutter
+
+
+flutter_icons:
+  android: "icon_launcher"
+  ios: true
+  image_path: "assets/images/player.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true # remove alpha channel from ios icons
+  web:
+    generate: true
+    image_path: "assets/images/player.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/player.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/player.png"
+
 
 flutter: 
   uses-material-design: true
