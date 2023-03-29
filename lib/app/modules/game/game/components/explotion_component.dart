@@ -16,9 +16,10 @@ class ExplotionComponent extends SpriteAnimationComponent
     animation = SpriteAnimation.fromFrameData(
       explotion,
       SpriteAnimationData.sequenced(
-        amount: 8,
+        amount: 16,
+        amountPerRow: 4,
         textureSize: Vector2(64, 64),
-        stepTime: 0.1,
+        stepTime: 0.75,
       ),
     );
     animation!.loop = false;
