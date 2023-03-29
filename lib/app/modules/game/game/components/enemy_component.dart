@@ -7,6 +7,7 @@ import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:space_shooter/app/modules/game/game/components/bullet_component.dart';
 import 'package:space_shooter/app/modules/game/game/components/explotion_component.dart';
+import 'package:space_shooter/app/modules/game/game/components/player_component.dart';
 import 'package:space_shooter/app/modules/game/game/space_shooter.dart';
 
 class EnemyComponent extends SpriteComponent
@@ -47,6 +48,10 @@ class EnemyComponent extends SpriteComponent
     if (other is BulletComponent) {
       lifeCount--;
       if (lifeCount == 0) {
+        gameRef.score++;
+        if (gameRef.score % 5 == 0) {
+          gameRef.increaseEnemySpawningRate();
+        }
         gameRef.remove(this);
       } else if (lifeCount == 2) {
         remove(hardColorEffect);
@@ -56,6 +61,9 @@ class EnemyComponent extends SpriteComponent
       }
       gameRef.add(ExplotionComponent(other.position));
       gameRef.remove(other);
+    } else if (other is PlayerComponent) {
+      gameRef.playerLifeCount--;
+      gameRef.remove(this);
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -65,6 +73,7 @@ class EnemyComponent extends SpriteComponent
     super.update(dt);
     position.y += 50 * dt;
     if (position.y > gameRef.size.y) {
+      gameRef.playerLifeCount--;
       gameRef.remove(this);
     }
   }

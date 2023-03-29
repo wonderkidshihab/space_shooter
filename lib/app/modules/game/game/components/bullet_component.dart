@@ -26,7 +26,7 @@ class BulletComponent extends SpriteComponent with HasGameRef<SpaceShooter> {
   @override
   void update(double dt) {
     super.update(dt);
-    position.y -= 50 * dt;
+    position.y -= 500 * dt;
     if (position.y < (0 - size.y)) {
       gameRef.remove(this);
     }

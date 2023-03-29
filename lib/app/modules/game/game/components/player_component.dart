@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/extensions.dart';
+import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:space_shooter/app/modules/game/game/components/bullet_component.dart';
 import 'package:space_shooter/app/modules/game/game/space_shooter.dart';
 
@@ -9,8 +10,9 @@ class PlayerComponent extends SpriteComponent
     with
         HasGameRef<SpaceShooter>,
         DragCallbacks,
-        TapCallbacks,
-        CollisionCallbacks {
+        CollisionCallbacks,
+        KeyboardHandler {
+  double bulletInterval = 0.1;
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -37,15 +39,25 @@ class PlayerComponent extends SpriteComponent
   }
 
   @override
-  void onTapDown(event) {
-    // create a bullet and add it to the game when the player is tapped
-    // the bullet will be added at the center of the player
-    gameRef.add(
-      BulletComponent(
-        initalPosition: position,
-        direction: Vector2(0, -1),
-      ),
-    );
+  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    if (event.isKeyPressed(LogicalKeyboardKey.space)) {
+      gameRef.add(
+          BulletComponent(initalPosition: position, direction: Vector2(0, -1)));
+    }
+    return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void update(double dt) {
+    // if (Platform.isAndroid || Platform.isIOS) {
+    bulletInterval -= dt;
+    if (bulletInterval <= 0) {
+      bulletInterval = 0.1;
+      gameRef.add(
+          BulletComponent(initalPosition: position, direction: Vector2(0, -1)));
+    }
+    // }
+    super.update(dt);
   }
 
   void reset() {
