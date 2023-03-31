@@ -5,13 +5,17 @@ import 'package:flame/experimental.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame_audio/audio_pool.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:space_shooter/app/modules/game/game/components/background_component.dart';
 import 'package:space_shooter/app/modules/game/game/components/bullet_component.dart';
 import 'package:space_shooter/app/modules/game/game/components/enemy_component.dart';
 import 'package:space_shooter/app/modules/game/game/components/explotion_component.dart';
+import 'package:space_shooter/app/modules/game/game/components/game_pause_button.dart';
 import 'package:space_shooter/app/modules/game/game/components/life_component.dart';
 import 'package:space_shooter/app/modules/game/game/components/player_component.dart';
 import 'package:space_shooter/app/modules/game/game/components/score_component.dart';
+import 'package:space_shooter/app/modules/game/game/components/volume_component.dart';
 
 class SpaceShooter extends FlameGame
     with
@@ -29,6 +33,8 @@ class SpaceShooter extends FlameGame
   final Random _random = Random();
   double _spawnTimer = 0.0;
   double _spawnInterval = 2.0;
+  late AudioPool explosionSound;
+  bool get soundOn => FlameAudio.bgm.isPlaying;
 
   @override
   Future<void> onLoad() async {
@@ -39,13 +45,23 @@ class SpaceShooter extends FlameGame
       'bullet.png',
       'enemy.png',
       'explotion.png',
+      'pause.png',
+      'volume.png',
     ]);
+    await FlameAudio.bgm.play('background.wav', volume: 0.25);
+    await FlameAudio.audioCache.loadAll(<String>[
+      'explosion.wav',
+    ]);
+    explosionSound =
+        await FlameAudio.createPool("explosion.wav", maxPlayers: 5);
 
     add(background);
     add(player);
     add(ScreenHitbox());
     add(ScoreComponent());
     add(PlayerLifeComponent());
+    add(GamePauseButton());
+    add(VolumeComponent());
     await super.onLoad();
   }
 
@@ -89,5 +105,19 @@ class SpaceShooter extends FlameGame
     removeWhere((component) => component is EnemyComponent);
     removeWhere((component) => component is ExplotionComponent);
     removeWhere((component) => component is BulletComponent);
+  }
+
+  void toggleVolume() {
+    if (FlameAudio.bgm.isPlaying) {
+      FlameAudio.bgm.pause();
+    } else {
+      FlameAudio.bgm.resume();
+    }
+  }
+
+  @override
+  void onDetach() {
+    FlameAudio.bgm.dispose();
+    super.onDetach();
   }
 }

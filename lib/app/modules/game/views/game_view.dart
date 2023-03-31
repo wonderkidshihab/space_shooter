@@ -53,9 +53,10 @@ class GameView extends GetView<GameController> {
                 color: Colors.black.withOpacity(0.5),
                 child: Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Pause',
+                        'Game Paused',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 40,
@@ -68,6 +69,35 @@ class GameView extends GetView<GameController> {
                           myGame.resumeEngine();
                         },
                         text: 'RESUME',
+                        type: GFButtonType.solid,
+                        shape: GFButtonShape.pills,
+                        color: Colors.white,
+                        size: GFSize.LARGE,
+                        textColor: Colors.black,
+                      ),
+                      const SizedBox(height: 20),
+                      GFButton(
+                        onPressed: () {
+                          myGame.overlays.remove('pause');
+                          myGame.resumeEngine();
+                          myGame.reset();
+                        },
+                        text: 'RESTART',
+                        type: GFButtonType.solid,
+                        shape: GFButtonShape.pills,
+                        color: Colors.white,
+                        size: GFSize.LARGE,
+                        textColor: Colors.black,
+                      ),
+                      const SizedBox(height: 20),
+                      GFButton(
+                        onPressed: () {
+                          myGame.overlays.remove('pause');
+                          myGame.resumeEngine();
+                          myGame.reset();
+                          Get.back();
+                        },
+                        text: 'EXIT',
                         type: GFButtonType.solid,
                         shape: GFButtonShape.pills,
                         color: Colors.white,

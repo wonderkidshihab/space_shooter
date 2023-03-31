@@ -59,6 +59,9 @@ class EnemyComponent extends SpriteComponent
       } else if (lifeCount == 1) {
         remove(mediumColorEffect);
       }
+      gameRef.explosionSound.start(
+        volume: gameRef.soundOn ? 0.3 : 0.0,
+      );
       gameRef.add(ExplotionComponent(other.position));
       gameRef.remove(other);
     } else if (other is PlayerComponent) {
