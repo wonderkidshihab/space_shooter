@@ -7,7 +7,7 @@ class GamePauseButton extends PositionComponent
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    size = Vector2(100, 100);
+    size = Vector2(50, 50);
     position = Vector2(0, 0);
     add(SpriteComponent.fromImage(
       gameRef.images.fromCache('pause.png'),

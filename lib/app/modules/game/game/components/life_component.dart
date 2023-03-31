@@ -17,7 +17,7 @@ class PlayerLifeComponent extends PositionComponent
       size: Vector2(30, 30),
     );
 
-    position = Vector2(gameRef.size.x - size.x - 100, 10);
+    position = Vector2(gameRef.size.x - size.x - 120, 10);
     life.position = Vector2(0, 10);
     lifeText = TextBoxComponent();
     lifeText.position = Vector2(30, 0);
